@@ -1,5 +1,8 @@
+from builtins import input
+from selenium.webdriver.common.by import By
+
 import pytest
-from pageObjects.LoginPage import LoginPage
+from PageObjects.LoginPage import LoginPage
 from utilities.readProperties import ReadConfig
 from utilities.customLogger import LogGen
 from utilities import XLUtils
@@ -16,11 +19,30 @@ class Test_002_DDT_Login():
         self.logger.info("******* Starting Login DDT Test **********")
         self.driver = setup
         self.driver.get(self.baseURL)
+        if self.driver.current_url.endswith('password'):
+            self.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys('gloora')
+            self.driver.find_element(By.XPATH, '/html/body/div/div[2]/div[2]/form/button').click()
+            self.driver.get('https://bow-wow-lab.myshopify.com/account/login')
         self.driver.maximize_window()
         self.lp = LoginPage(self.driver)
         self.logger.info("Closed driver")
-        self.driver.quit()
 
+
+        self.inputusername = 'ls2170184@gmail.com'
+        self.inputpassword = 'Lucky@123'
+        params = (self.inputusername,)
+        self.customers_detail = XLUtils.readData('bowwowlabdb', 'SELECT * FROM customers WHERE email = %s', params)
+
+        self.lp.setUserName(self.inputusername)
+        self.lp.setPassword(self.inputpassword)
+        self.lp.clickLogin()
+
+        if len(self.customers_detail) < 0:
+            self.logger.info("******* Login failed **********")
+            self.logger.info("******* Customer already exists **********")
+
+        time.sleep(5)
+        self.driver.quit()
         """self.rows = XLUtils.getRowCount(self.path, 'Sheet1')
         print('Number of rows...',self.rows)
         lst_status=[]
