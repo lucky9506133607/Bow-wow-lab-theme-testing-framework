@@ -2,7 +2,6 @@ import time
 
 from selenium.webdriver.common.by import By
 
-
 class LoginPage:
     textbox_username_xpath = "//*[@id='CustomerEmail']"
     textbox_password_id = "CustomerPassword"
