@@ -21,7 +21,7 @@ class Test_002_DDT_Login():
         self.logger.info("Closed driver")
         self.driver.quit()
 
-        self.lp.setUserName('')
+
 
 
         """self.rows = XLUtils.getRowCount(self.path, 'Sheet1')
