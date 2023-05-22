@@ -1,66 +1,30 @@
-mport time
+import time
 
 from selenium.webdriver.common.by import By
 
 
 class LoginPage:
-    def setUp(self):
-        self.driver = webdriver.Chrome(executable_path=r'')
-        self.driver.implicitly_wait(30)
-        self.base_url = "https://www.google.com/"
-        self.verificationErrors = []
-        self.accept_next_alert = True
+    textbox_username_xpath = "//*[@id='CustomerEmail']"
+    textbox_password_id = "CustomerPassword"
+    button_login_xpath = "//*[@id='customer_login']/button"
+    link_logout_linktext = "//*[@id='shopify-section-template--16097491189926__main']/div/div[1]/a"
 
-    def test_untitled_test_case(self):
-        driver = self.driver
-        driver.get("https://centaur-packaging.myshopify.com/password")
-        driver.find_element_by_xpath(
-            "//div[@id='shopify-section-template--18290242388257__main']/div/div/div/div/a/span").click()
-        driver.find_element_by_xpath("//div[7]/div[2]/div/div/div/form/div/input").click()
-        driver.find_element_by_xpath("//div[7]/div[2]/div/div/div/form/div/input").clear()
-        driver.find_element_by_xpath("//div[7]/div[2]/div/div/div/form/div/input").send_keys("alinga")
-        driver.find_element_by_xpath(
-            "(.//*[normalize-space(text()) and normalize-space(.)='Enter store using password:'])[2]/following::button[1]").click()
-        driver.get("https://centaur-packaging.myshopify.com/")
-        driver.get("https://bow-wow-lab.myshopify.com/account/login")
-        driver.find_element_by_id("CustomerEmail").click()
-        driver.find_element_by_id("CustomerEmail").clear()
-        driver.find_element_by_id("CustomerEmail").send_keys("ls2170184@gmail.com")
-        driver.find_element_by_id("CustomerPassword").click()
-        driver.find_element_by_id("CustomerPassword").clear()
-        driver.find_element_by_id("CustomerPassword").send_keys("lucky@123")
-        driver.find_element_by_xpath("//form[@id='customer_login']/button").click()
+    def __init__(self,driver):
+        self.driver = driver
 
-    def is_element_present(self, how, what):
-        try:
-            self.driver.find_element(by=how, value=what)
-        except NoSuchElementException as e:
-            return False
-        return True
+    def setUserName(self, username):
+        self.driver.find_element(By.XPATH, self.textbox_username_xpath).clear()
+        self.driver.find_element(By.XPATH, self.textbox_username_xpath).send_keys(username)
 
-    def is_alert_present(self):
-        try:
-            self.driver.switch_to_alert()
-        except NoAlertPresentException as e:
-            return False
-        return True
+    def setPassword(self, password):
+        self.driver.find_element(By.ID, self.textbox_password_id).clear()
+        self.driver.find_element(By.ID, self.textbox_password_id).send_keys(password)
 
-    def close_alert_and_get_its_text(self):
-        try:
-            alert = self.driver.switch_to_alert()
-            alert_text = alert.text
-            if self.accept_next_alert:
-                alert.accept()
-            else:
-                alert.dismiss()
-            return alert_text
-        finally:
-            self.accept_next_alert = True
+    def clickLogin(self):
+        time.sleep(5)
+        self.driver.find_element(By.XPATH, self.button_login_xpath).click()
 
-    def tearDown(self):
-        self.driver.quit()
-        self.assertEqual([], self.verificationErrors)
+    def clickLogout(self):
+        self.driver.find_element(By.LINK_TEXT, self.link_logout_linktext).click()
 
 
-if __name__ == "__main__":
-    unittest.main()
