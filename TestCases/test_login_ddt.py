@@ -20,10 +20,14 @@ class Test_002_DDT_Login():
         self.lp = LoginPage(self.driver)
         self.logger.info("Closed driver")
         self.driver.quit()
+
+        self.lp.setUserName('')
+
+
         """self.rows = XLUtils.getRowCount(self.path, 'Sheet1')
         print('Number of rows...',self.rows)
         lst_status=[]
-
+        
         for r in range(2,self.rows+1):
             self.user=XLUtils.readData(self.path,'Sheet1',r,1)
             self.password = XLUtils.readData(self.path, 'Sheet1', r, 2)
